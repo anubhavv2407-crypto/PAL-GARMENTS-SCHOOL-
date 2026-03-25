@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pal Garments | Gonda's Premier Uniform Brand</title>
+    <!-- Google Fonts -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+        :root {
+            --navy: #0F1A2F;
+            --navy-mid: #162642;
+            --yellow: #FFCC00;
+            --yellow-hover: #F2C200;
+            --white: #FFFFFF;
+            --off-white: #FBFBFB;
+            --yellow-soft: #FFF9E6;
+            --text-dark: #111111;
+            --text-muted: #777777;
+            --border: #F0F0F0;
+            --transition-premium: 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border-radius: 0 !important;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: var(--white); 
+            color: var(--text-dark); 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Scroll Progress Bar --- */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; width: 0%; height: 5px;
+            background: var(--yellow); z-index: 9999;
+        }
+
+        /* Typography */
+        h1, h2, h3, .impact-text { font-family: 'Bebas Neue', sans-serif; text-transform: uppercase; letter-spacing: 0.03em; line-height: 0.9; }
+        .italic-serif { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; text-transform: lowercase; }
+
+        section { padding: 140px 5%; position: relative; }
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        /* Reveal Animations */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(40px); 
+            transition: var(--transition-premium); 
+            will-change: transform, opacity;
+        }
+        .reveal.in-view { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+        
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+
+        /* --- Navbar --- */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100px;
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5%; z-index: 9000; transition: 0.4s var(--transition-smooth);
+        }
+        nav.scrolled { 
+            height: 75px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .nav-logo-container {
+            display: flex; align-items: center; gap: 12px; text-decoration: none;
+        }
+        .nav-logo-img { height: 75px; width: auto; transition: 0.4s; object-fit: contain; }
+        nav.scrolled .nav-logo-img { height: 55px; }
+        
+        .nav-logo-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px; color: var(--navy);
+            letter-spacing: 0.05em; transition: 0.4s;
+        }
+        nav.scrolled .nav-logo-text { font-size: 26px; }
+
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { text-decoration: none; color: var(--navy); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; transition: 0.3s; }
+        .nav-links a:hover { color: var(--yellow); }
+
+        .btn-premium-nav {
+            background: var(--navy); color: var(--white);
+            padding: 13px 28px; font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.2em; text-decoration: none;
+            transition: 0.3s;
+        }
+        .btn-premium-nav:hover { background: var(--yellow); color: var(--navy); transform: translateY(-2px); }
+        
+        .mobile-toggle { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+        .mobile-toggle div { width: 25px; height: 2px; background: var(--navy); }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh; 
+            background: linear-gradient(rgba(15, 26, 47, 0.82), rgba(15, 26, 47, 0.82)), url('https://i.postimg.cc/qRmhH6Cm/image.png');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: var(--white); display: flex; align-items: center; justify-content: center;
+            text-align: center; overflow: hidden; padding-top: 100px;
+        }
+        .hero-content h1 { font-size: clamp(40px, 11vw, 160px); color: var(--yellow); margin-bottom: 10px; line-height: 0.85; }
+        .hero-content .sub-h1 { font-size: clamp(24px, 6.5vw, 85px); color: var(--white); margin-bottom: 30px; line-height: 1; font-weight: 400; }
+        .hero-content p { font-size: clamp(13px, 1.8vw, 18px); letter-spacing: 0.25em; opacity: 0.9; margin-bottom: 50px; text-transform: uppercase; font-weight: 300; }
+        
+        .hero-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .btn-xl { padding: 22px 55px; font-family: 'Bebas Neue', sans-serif; font-size: 24px; text-decoration: none; transition: 0.4s; border: 2px solid transparent; }
+        .btn-xl.yellow { background: var(--yellow); color: var(--navy); }
+        .btn-xl.outline { border-color: var(--white); color: var(--white); }
+        .btn-xl:hover { transform: translateY(-8px); box-shadow: 0 20px 45px rgba(0,0,0,0.4); }
+
+        /* --- Stats Strip --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--navy-mid); padding: 100px 5%; gap: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .stat-item { text-align: center; border-right: 1px solid rgba(255,255,255,0.08); }
+        .stat-item:last-child { border-right: none; }
+        .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 6vw, 90px); color: var(--white); line-height: 1; }
+        .stat-num span { color: var(--yellow); }
+        .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.3em; color: rgba(255,255,255,0.4); margin-top: 15px; }
+
+        /* --- School Grid --- */
+        .school-selection h2 { font-size: clamp(40px, 8vw, 110px); color: var(--navy); margin-bottom: 60px; line-height: 0.9; }
+        .school-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; background: var(--border); border: 2px solid var(--border); }
+        
+        .school-card { 
+            background: var(--white); padding: 60px 20px; text-align: center; transition: 0.7s var(--transition-premium); cursor: pointer; 
+            position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px;
+        }
+        .school-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--yellow-soft); transform: translateY(100%); transition: 0.6s var(--transition-premium); z-index: 0; }
+        .school-card:hover::before { transform: translateY(0); }
+        .school-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0; background: var(--yellow); transition: 0.5s; z-index: 2; }
+        .school-card:hover::after { height: 10px; }
+
+        .school-logo-img { height: 140px; width: 100%; object-fit: contain; margin-bottom: 30px; position: relative; z-index: 1; transition: 0.6s; }
+        .school-card:hover .school-logo-img { transform: scale(1.1) translateY(-10px); }
+        .school-card span { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--navy); position: relative; z-index: 1; text-transform: uppercase; }
+        
+        .school-card.plus-highlight { background: var(--navy); border: 3px solid var(--yellow); }
+        .school-card.plus-highlight span { color: var(--yellow); font-size: 28px; line-height: 1.1; max-width: 220px; }
+        .school-card.plus-highlight svg { width: 70px; height: 70px; fill: var(--yellow); margin-bottom: 25px; position: relative; z-index: 1; }
+        .school-card.plus-highlight:hover span { color: var(--navy); }
+        .school-card.plus-highlight:hover svg { fill: var(--navy); }
+
+        /* --- WHY PAL GARMENTS (BENTO) --- */
+        .why-pal-premium { background: var(--off-white); padding: 140px 5%; }
+        .bento-grid {
+            display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; margin-top: 80px;
+        }
+        .bento-card {
+            background: var(--white); padding: 50px; border: 1px solid var(--border); 
+            display: flex; flex-direction: column; transition: 0.5s var(--transition-smooth); position: relative; overflow: hidden;
+        }
+        .bento-card:hover { transform: translateY(-15px); box-shadow: 0 35px 70px rgba(0,0,0,0.06); border-color: var(--yellow); }
+        
+        .card-main { grid-column: span 8; grid-row: span 2; background: var(--navy); color: var(--white); }
+        .card-main h3 { font-size: clamp(35px, 5vw, 75px); color: var(--yellow); margin-bottom: 25px; line-height: 0.95; }
+        .card-main p { font-size: 19px; line-height: 1.7; opacity: 0.85; font-weight: 300; }
+        
+        .card-accent { grid-column: span 4; grid-row: span 2; background: var(--yellow); display: flex; align-items: center; justify-content: center; text-align: center; }
+        .card-accent h4 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(35px, 4vw, 55px); color: var(--navy); line-height: 0.9; }
+        
+        .card-regular { grid-column: span 4; }
+        .card-wide { grid-column: span 8; }
+
+        .bento-icon { font-size: 45px; margin-bottom: 20px; display: block; }
+        .bento-card h5 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--navy); margin-bottom: 12px; }
+        .bento-card p { font-size: 16px; color: var(--text-muted); line-height: 1.6; }
+
+        /* --- KINETIC SECTION --- */
+        .kinetic-premium { 
+            background: var(--navy); color: var(--white); 
+            padding: 240px 5%; overflow: hidden; 
+            text-align: center; position: relative;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .ghost-marquee { 
+            position: absolute; top: 50%; left: 0; transform: translateY(-50%); 
+            display: flex; gap: 60px; font-family: 'Bebas Neue', sans-serif; font-size: 22vw; 
+            color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04); 
+            white-space: nowrap; pointer-events: none; z-index: 0; 
+            animation: marquee-infinite 30s linear infinite; 
+        }
+        @keyframes marquee-infinite { 
+            0% { transform: translate(0, -50%); } 
+            100% { transform: translate(-50%, -50%); } 
+        }
+        
+        .kinetic-label { 
+            font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+            font-size: clamp(45px, 10vw, 110px); color: var(--white); 
+            margin-bottom: -15px; position: relative; z-index: 2; 
+        }
+        .word-roll-box { 
+            height: clamp(100px, 20vw, 250px); overflow: hidden; 
+            position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; 
+        }
+        .kinetic-word { 
+            font-family: 'Bebas Neue', sans-serif; 
+            font-size: clamp(80px, 18vw, 240px); 
+            color: var(--yellow); 
+            will-change: transform;
+            transition: 0.8s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+        .kinetic-description {
+            max-width: 700px; margin: 50px auto 0; opacity: 0.85; 
+            line-height: 2.1; font-weight: 300; font-size: 18px;
+            position: relative; z-index: 2;
+        }
+
+        /* --- Brand Spotlight --- */
+        .palji-section-premium { background: var(--white); display: flex; align-items: stretch; flex-wrap: wrap; position: relative; overflow: hidden; }
+        .palji-content-v2 { flex: 1.2; min-width: 320px; padding: 140px 5%; display: flex; flex-direction: column; justify-content: center; }
+        .palji-brand-logo { height: clamp(90px, 15vw, 160px); width: auto; margin-bottom: 45px; align-self: flex-start; object-fit: contain; }
+        .palji-content-v2 p { font-size: clamp(17px, 2vw, 20px); line-height: 1.8; color: var(--text-muted); margin-bottom: 55px; font-weight: 300; }
+        
+        .palji-visual-v2 { flex: 0.8; min-width: 320px; min-height: 600px; padding: 5%; display: flex; align-items: center; justify-content: center; }
+        .palji-image-frame { width: 100%; height: 100%; box-shadow: 45px 45px 0 var(--yellow); overflow: hidden; position: relative; transition: 1s; }
+        .palji-image-frame img { width: 100%; height: 100%; object-fit: cover; transition: 3s var(--transition-premium); transform: scale(1.1); }
+
+        /* --- Key Strengths --- */
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 60px; }
+        .feature-item { padding: 65px 45px; border: 1px solid var(--border); transition: 0.5s var(--transition-smooth); background: var(--white); text-align: left; }
+        .feature-item:hover { transform: translate(-15px, -15px); border: 2px solid var(--yellow); box-shadow: 15px 15px 0 var(--yellow); z-index: 5; }
+        .feature-item h3 { font-size: 34px; color: var(--navy); margin-bottom: 18px; }
+
+        /* --- Huge Contact --- */
+        .huge-contact { text-align: center; padding: 200px 5%; background: var(--white); overflow: hidden; }
+        .huge-phone { 
+            font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 14vw, 280px); 
+            color: var(--navy); text-decoration: none; line-height: 0.8; 
+            transition: 0.8s var(--transition-smooth); display: block; margin: 60px 0; white-space: nowrap; 
+        }
+        .huge-phone:hover { color: var(--yellow); transform: scale(1.06); letter-spacing: 0.02em; }
+
+        /* --- Footer --- */
+        footer { background: var(--navy); color: var(--white); padding: 140px 5% 60px; text-align: center; }
+        .footer-logo-img { height: clamp(100px, 15vw, 150px); width: auto; margin-bottom: 30px; object-fit: contain; }
+        .footer-tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(18px, 2.5vw, 24px); color: var(--yellow); margin-bottom: 60px; display: block; opacity: 0.9; }
+        .footer-links { display: flex; justify-content: center; gap: 35px; flex-wrap: wrap; margin-bottom: 80px; }
+        .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 13px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.1em; transition: 0.3s; }
+        .footer-links a:hover { color: var(--white); transform: translateY(-5px); }
+        .copyright { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.35em; margin-top: 100px; text-transform: uppercase; }
+
+        .section-tag { display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.45em; color: var(--text-muted); margin-bottom: 25px; }
+
+        /* --- Mobile Overrides --- */
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .bento-grid { grid-template-columns: 1fr; }
+            .card-main, .card-accent, .card-regular, .card-wide { grid-column: span 12; }
+        }
+
+        @media (max-width: 768px) {
+            nav { height: 75px; }
+            .nav-links, .nav-actions .btn-premium-nav { display: none; }
+            .mobile-toggle { display: flex; }
+            .nav-logo-text { font-size: 22px; }
+            .nav-logo-img { height: 50px; }
+            
+            section { padding: 100px 5%; }
+            .hero { padding-top: 120px; }
+            .hero-content h1 { font-size: 50px; line-height: 0.95; margin-bottom: 15px; }
+            .hero-content .sub-h1 { font-size: 30px; line-height: 1.1; margin-bottom: 30px; }
+            .hero-content p { margin-bottom: 45px; letter-spacing: 0.15em; }
+            
+            .stats-grid { gap: 20px; padding: 70px 5%; }
+            .stat-item { border-right: none; }
+            
+            .bento-card { padding: 45px 35px; }
+            
+            .palji-content-v2 { text-align: center; padding: 80px 5%; }
+            .palji-brand-logo { align-self: center; height: 100px; }
+            .palji-visual-v2 { min-height: 400px; }
+            .palji-image-frame { box-shadow: 25px 25px 0 var(--yellow); }
+            
+            .features-grid { grid-template-columns: 1fr; }
+            
+            .huge-phone { font-size: clamp(35px, 12vw, 85px); margin: 40px 0; }
+        }
+
+        .mobile-nav { 
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100%; 
+            background: var(--navy); z-index: 9999; transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 35px;
+        }
+        .mobile-nav.active { right: 0; }
+        .mobile-nav a { color: var(--white); text-decoration: none; font-size: 36px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
+        .mobile-close { position: absolute; top: 25px; right: 5%; color: var(--white); font-size: 30px; }
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <a href="#" class="nav-logo-container">
+            <!-- New Logo used here -->
+            <img src="https://i.postimg.cc/k5RqxX47/image.png" alt="Pal Garments Logo" class="nav-logo-img">
+            <span class="nav-logo-text">PAL GARMENTS</span>
+        </a>
+        <div class="nav-links">
+            <a href="#about">About Legacy</a>
+            <a href="#schools">Partner Schools</a>
+            <!-- Nav text updated to Products -->
+            <a href="#why-pal">Products</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="nav-actions">
+            <a href="tel:+9194150XXXXX" class="btn-premium-nav">Enquire Bulk</a>
+            <div class="mobile-toggle" id="menu-btn">
+                <div></div><div></div><div></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobile-menu">
+        <div class="mobile-close" id="menu-close">✕</div>
+        <a href="#about" onclick="toggleMenu()">About Legacy</a>
+        <a href="#schools" onclick="toggleMenu()">Partner Schools</a>
+        <!-- Mobile Nav text updated to Products -->
+        <a href="#why-pal" onclick="toggleMenu()">Products</a>
+        <a href="#contact" onclick="toggleMenu()">Contact</a>
+        <a href="tel:+9194150XXXXX" style="color: var(--yellow)">Call Now</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <span class="section-tag reveal">Established 1956 · Gonda</span>
+            <h1 class="reveal stagger-1">ADMISSION HO GYA?</h1>
+            <h1 class="sub-h1 reveal stagger-2">Uniform ki tension <br>hum pe chhor Dijiye</h1>
+            <p class="reveal stagger-3">68+ Years of Excellence in School Wear.</p>
+            <div class="hero-btns reveal stagger-4">
+                <a href="#schools" class="btn-xl yellow">Explore Our Schools</a>
+                <a href="#about" class="btn-xl outline">The Brand behind the Uniform</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Strip -->
+    <div class="stats-grid">
+        <div class="stat-item reveal">
+            <div class="stat-num" data-target="68">0<span>+</span></div>
+            <div class="stat-label">Years Legacy</div>
+        </div>
+        <div class="stat-item reveal stagger-1">
+            <div class="stat-num" data-target="100">0<span>+</span></div>
+            <div class="stat-label">Institutions</div>
+        </div>
+        <div class="stat-item reveal stagger-2">
+            <div class="stat-num" data-target="100">0<span>%</span></div>
+            <div class="stat-label">In-House Production</div>
+        </div>
+        <div class="stat-item reveal stagger-3">
+            <div class="stat-num" data-target="1956">0</div>
+            <div class="stat-label">Year Founded</div>
+        </div>
+    </div>
+
+    <!-- Partner Schools -->
+    <section id="schools" class="school-selection">
+        <div class="container">
+            <span class="section-tag reveal">Our Partners</span>
+            <h2 class="reveal stagger-1">Proudly Serving <br>Renowned Institutions</h2>
+            
+            <div class="school-grid">
+                <div class="school-card reveal"><img src="https://i.postimg.cc/L5J53S3W/image.png" alt="Fatima" class="school-logo-img"><span>Fatima School</span></div>
+                <div class="school-card reveal stagger-1"><img src="https://i.postimg.cc/fRC3s8yv/image.png" alt="Rosewood" class="school-logo-img"><span>Rosewood School</span></div>
+                <div class="school-card reveal stagger-2"><img src="https://i.postimg.cc/qMXqc18F/image.png" alt="Raghukul" class="school-logo-img"><span>Shri Raghukul Vidhya Peeth</span></div>
+                <div class="school-card reveal stagger-3"><img src="https://i.postimg.cc/WpmTxhhD/image.png" alt="Sunbeam" class="school-logo-img"><span>Sunbeam School</span></div>
+                <div class="school-card reveal stagger-1"><img src="https://i.postimg.cc/prPbPJpf/image.png" alt="Ravi" class="school-logo-img"><span>Ravi Children School</span></div>
+                <div class="school-card reveal stagger-2"><img src="https://i.postimg.cc/mZm6csqT/unnamed.jpg" alt="Alhuda" class="school-logo-img"><span>Alhuda Public</span></div>
+                <div class="school-card reveal stagger-3"><img src="https://i.postimg.cc/fWVg0Fhw/logo-removebg-preview.png" alt="Gurunanak" class="school-logo-img"><span>Shri Gurunanak school</span></div>
+                <div class="school-card reveal stagger-4 plus-highlight">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <span>Serving 100+ Schools with Pride</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Pal Garments (Bento) -->
+    <section id="why-pal" class="why-pal-premium">
+        <div class="container">
+            <span class="section-tag reveal">Everything Under One Roof</span>
+            <h2 class="reveal stagger-1" style="font-size: clamp(40px, 8vw, 100px); color: var(--navy); line-height: 0.9;">Why Pal Garments?</h2>
+            
+            <div class="bento-grid">
+                <div class="bento-card card-main reveal">
+                    <h3>Backed by our own manufacturing</h3>
+                    <p>At Pal Garments, we take pride in offering premium quality school uniforms backed by our own in-house manufacturing. As a complete schoolwear destination, we provide everything your child needs under one roof.</p>
+                </div>
+
+                <div class="bento-card card-accent reveal stagger-1">
+                    <h4>Wholesale & Retail</h4>
+                </div>
+
+                <div class="bento-card card-regular reveal stagger-2">
+                    <span class="bento-icon">📏</span>
+                    <h5>Custom Stitching</h5>
+                    <p>We ensure a perfect fit for every child, with expert custom stitching solutions for over and under sizes.</p>
+                </div>
+
+                <div class="bento-card card-wide reveal stagger-3">
+                    <span class="bento-icon">🎒</span>
+                    <h5>The Complete Suite</h5>
+                    <p>Uniforms, shoes, bags, tiffins, bottles, and more — all engineered for comfort and maximum durability.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KINETIC SECTION -->
+    <section class="kinetic-premium">
+        <div class="ghost-marquee">PALJI QUALITY · GONDA PRIDE · ESTABLISHED 1956 · PALJI QUALITY · GONDA PRIDE · ESTABLISHED 1956 · PALJI QUALITY · GONDA PRIDE · ESTABLISHED 1956</div>
+        <div class="kinetic-label reveal">we are</div>
+        <div class="word-roll-box">
+            <div id="kinetic-word" class="kinetic-word reveal">EST. 1956</div>
+        </div>
+        <p class="kinetic-description reveal stagger-1">From the finest fabric to the final stitch, every detail is crafted to deliver the best for your child.</p>
+    </section>
+
+    <!-- Brand Spotlight -->
+    <section id="about" class="palji-section-premium">
+        <div class="palji-content-v2">
+            <span class="section-tag reveal">Our Signature Quality</span>
+            <!-- Logo update for spotlight section -->
+            <img src="https://i.postimg.cc/k5RqxX47/image.png" alt="Palji Brand Logo" class="palji-brand-logo reveal stagger-1">
+            <p class="reveal stagger-2">
+                Under our proprietary brand <span style="font-weight:700; color:var(--navy)">‘Palji’</span>, we create school uniforms that combine durability, comfort, and a perfect fit. With complete in-house textile manufacturing, we ensure strict quality control at every stage — from fabric selection to final finishing.
+            </p>
+            <div class="reveal stagger-3"><a href="#contact" class="btn-premium-nav" style="padding: 18px 50px;">Enquire Bulk Orders</a></div>
+        </div>
+        <div class="palji-visual-v2 reveal stagger-2">
+            <div class="palji-image-frame">
+                <img src="https://i.postimg.cc/tCvKnqFv/image.png" alt="Quality Craft">
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Strengths -->
+    <section class="container features-section">
+        <span class="section-tag reveal">Our Strengths</span>
+        <h2 class="reveal stagger-1" style="font-size: clamp(40px, 6vw, 75px); color: var(--navy);">Our Key Strengths</h2>
+        <div class="features-grid">
+            <div class="feature-item reveal stagger-1"><h3>100% In-House</h3><p>Every piece is crafted in-house at our facility, giving us complete control over precision and finishing.</p></div>
+            <div class="feature-item reveal stagger-2"><h3>Built for Bulk</h3><p>We support schools and retailers with reliable supply, consistent quality, and efficient service.</p></div>
+            <div class="feature-item reveal stagger-3"><h3>One-Stop Store</h3><p>Everything your child needs — uniforms to accessories — is available under one single roof.</p></div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="huge-contact">
+        <span class="section-tag reveal">Direct Line</span>
+        <h2 class="reveal stagger-1">Need assistance? Call us.</h2>
+        <a href="tel:+9194150XXXXX" class="huge-phone reveal stagger-2">+91 94150 XXXXX</a>
+        <div class="reveal stagger-3"><a href="#" class="btn-xl yellow" style="padding: 22px 100px;">Connect WhatsApp</a></div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="reveal">
+            <!-- Footer logo update -->
+            <img src="https://i.postimg.cc/k5RqxX47/image.png" alt="Footer Logo" class="footer-logo-img">
+        </div>
+        <span class="footer-tagline reveal stagger-1">Where Every Stitch Tells a Story of Quality</span>
+        <div class="footer-links reveal stagger-2">
+            <a href="#">Home</a><a href="#about">About</a><a href="#schools">Schools</a><a href="#">Bulk Enquiry</a><a href="#contact">Contact</a>
+        </div>
+        <div class="copyright">© 2026 PAL GARMENTS · GONDA · ALL RIGHTS RESERVED</div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        function toggleMenu() { mobileMenu.classList.toggle('active'); }
+        menuBtn.addEventListener('click', toggleMenu);
+        menuClose.addEventListener('click', toggleMenu);
+
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement, b = document.body, st = 'scrollTop', sh = 'scrollHeight';
+            const percent = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+            document.getElementById('scroll-progress').style.width = percent + "%";
+            const nav = document.getElementById('navbar');
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    if (entry.target.classList.contains('stat-num')) startCount(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal, .stat-num, .why-pal-premium, .palji-section-premium').forEach(el => observer.observe(el));
+
+        function startCount(el) {
+            if (el.dataset.done) return;
+            el.dataset.done = "true";
+            const target = parseInt(el.dataset.target);
+            const duration = 2500;
+            const startTime = performance.now();
+            const plusSpan = el.querySelector('span') ? el.querySelector('span').innerText : '';
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                const current = Math.floor(easeOutExpo * target);
+                if (el.dataset.target === "1956") el.innerText = current;
+                else el.innerHTML = `${current}<span>${plusSpan}</span>`;
+                if (progress < 1) requestAnimationFrame(update);
+                else {
+                    if (el.dataset.target === "1956") el.innerText = target;
+                    else el.innerHTML = `${target}<span>${plusSpan}</span>`;
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
+        const kineticEl = document.getElementById('kinetic-word');
+        const kineticWords = ["EST. 1956", "PALJI", "QUALITY", "TRUSTED", "GONDA'S BEST"];
+        let wordIdx = 0;
+        setInterval(() => {
+            kineticEl.style.transform = "translateY(-40px)";
+            kineticEl.style.opacity = 0;
+            setTimeout(() => {
+                wordIdx = (wordIdx + 1) % kineticWords.length;
+                kineticEl.innerText = kineticWords[wordIdx];
+                kineticEl.style.transform = "translateY(40px)";
+                kineticEl.offsetHeight; 
+                kineticEl.style.transform = "translateY(0)";
+                kineticEl.style.opacity = 1;
+            }, 600);
+        }, 3000);
+
+        window.onload = () => {
+            document.querySelectorAll('#hero .reveal').forEach((el, i) => {
+                setTimeout(() => el.classList.add('in-view'), 200 + (i * 120));
+            });
+        };
+    </script>
+</body>
+</html>
